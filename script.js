@@ -1,6 +1,6 @@
 // 保存用のファイル名を生成
 function yyyymmddhhmise() {
-  // 日付時間秒を文字列で返す	
+ // 日付時間秒を文字列で返す	
     const dt = new Date();
     var yyyy = dt.getFullYear();
     var mm = ('00' + (dt.getMonth()+1)).slice(-2);
