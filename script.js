@@ -17,8 +17,8 @@ var filename = "yanokura-2022-" + yyyymmddhhmise() + ".csv" ;
 
 var jsPsych = initJsPsych({
   on_finish: function() {
-    jsPsych.data.get().localSave('csv', filename);
-//    jsPsych.data.displayData();
+//    jsPsych.data.get().localSave('csv', filename);
+    jsPsych.data.displayData();
   }
 });
 
@@ -104,12 +104,34 @@ html: '\
 
 var instruction_p3 = {
   type: jsPsychHtmlButtonResponse,
-  stimulus: '<div align="left"><font size=6>\
-練習<br>\
-<br></font></div>\
+  stimulus: '<div align="left">\
+続いて、心拍数を測定します。<br>\
+<br>\
+実験者の指示に従ってください。<br>\
+<br></div>\
 ',
 choices: ['次へ'],
 } ;
+
+var NumOfHeartbeats_p1 = {
+  type: jsPsychHtmlButtonResponse,
+  stimulus: '<p style="font-size: 48px;">+</p>',
+  choices: ['次へ'],
+} ;
+
+var NumOfHeartbeats_p2 = {
+  type: jsPsychSurveyHtmlForm,
+  preamble:'',
+html: '\
+測定した心拍数はいくつだと思いましたか。入力してください。<input name="q1" type="text" /><br><br>\
+<br><br>\
+　　　　　　　　　　　　　　　　　　　　　　　（実測値）　<input name="q2" type="text" /><br><br>\
+<br><br>\
+入力が完了しましたら、実験の説明に移ります。「次へ」を押してください。<br>\
+<br>',
+  button_label: '次へ',
+} ;
+
 
 // 実験の終了
 var bye = {
@@ -265,4 +287,4 @@ for (let i = 0; i< varexam.length; i++) {
 // ------------------------------------------------------------------------
 
 //jsPsych.run([enter_fullscreen,par_id,hello,trials,bye,exit_fullscreen]);
-jsPsych.run([enter_fullscreen,instruction_p1,instruction_p2,trials_pre,par_id,trials,bye,exit_fullscreen]);
+jsPsych.run([/*enter_fullscreen,*/instruction_p1,instruction_p2,instruction_p3,NumOfHeartbeats_p1,NumOfHeartbeats_p2/*,exit_fullscreen*/]);
