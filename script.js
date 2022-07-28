@@ -63,6 +63,7 @@ var enter_fullscreen = {
   fullscreen_mode: true
 }
 
+// 教示文最初ページ
 var instruction_p1 = {
   type: jsPsychHtmlButtonResponse,
   stimulus: '<div align="left">\
@@ -84,6 +85,7 @@ var instruction_p1 = {
 choices: ['開始'],
 } ;
 
+// 被検者情報の入力
 var instruction_p2 = {
   type: jsPsychSurveyHtmlForm,
   preamble:'<div align="left"><font size=4>\
@@ -102,6 +104,7 @@ html: '\
   button_label: '次へ',
 } ;
 
+// これから心拍数を測定します
 var instruction_p3 = {
   type: jsPsychHtmlButtonResponse,
   stimulus: '<div align="left">\
@@ -113,12 +116,14 @@ var instruction_p3 = {
 choices: ['次へ'],
 } ;
 
+// 心拍数測定中画面
 var NumOfHeartbeats_p1 = {
   type: jsPsychHtmlKeyboardResponse,
   stimulus: '<p style="font-size: 48px;">+</p>',
   choices: ['q'],
 } ;
 
+// 心拍数の入力
 var NumOfHeartbeats_p2 = {
   type: jsPsychSurveyHtmlForm,
   preamble:'',
@@ -132,6 +137,7 @@ html: '\
   button_label: '次へ',
 } ;
 
+// 実験の説明(1/3) テンポAの説明
 var instruction_p4 = {
   type: jsPsychHtmlKeyboardResponse,
   choices: "ALL_KEYS",
@@ -146,13 +152,14 @@ var instruction_p4 = {
 ',
 } ;
 
+// 実験の説明(2/3) テンポBの説明
 var instruction_p5 = {
   type: jsPsychHtmlButtonResponse,
   choices: ["回答"],
   stimulus: '<div align="center">\
 <p style="font-size: 320px;">B</p>\
 ',
-  prompt: '<div align="center">\
+  prompt: '<div align="center"><br>\
 続いて、一定のテンポで音を刻むテンポBが再生されます。<br>\
 先程のテンポAと比べてどのくらい速い（または遅い）かを判断してください。<br>\
 「回答」ボタンを押すと、再生が止まり画面が切り替わります。<br>\
@@ -160,9 +167,12 @@ var instruction_p5 = {
 ',
 } ;
 
+// 実験の説明(3/3) スライダーの説明
 var instruction_p6 = {
-  type: jsPsychHtmlButtonResponse,
-  choices: ["次へ"],
+  type: jsPsychHtmlSliderResponse,
+//  require_movement: true,
+  labels: ['遅い', '同じ', '速い'],
+  button_label: "次へ",
   stimulus: '<div align="left">\
 テンポB（後に聴いたテンポ）が、テンポA（先に聴いたテンポ）に比べて、<br>\
 どのくらい速い（または遅い）かを、ツマミを動かして回答してください。<br>\
@@ -172,6 +182,7 @@ var instruction_p6 = {
 ',
 } ;
 
+// これから練習開始
 var instruction_p7 = {
   type: jsPsychHtmlButtonResponse,
   choices: ["開始"],
@@ -180,7 +191,7 @@ var instruction_p7 = {
   11試行からなるブロックに3回（計33試行）回答していただきます。<br>\
   <br>\
   <br>\
-  ※テンポAとテンポBの音の高さは全て同じです。<br>\
+  ※<strong>　テンポA　</strong>と<strong>　テンポB　</strong>の音の高さは全て同じです。<br>\
   <br>\
   <br>\
     それでは、練習試行を行います。<br>\
@@ -188,22 +199,55 @@ var instruction_p7 = {
 ',
 } ;
 
+// 練習終了
+var instruction_p8 = {
+  type: jsPsychHtmlButtonResponse,
+  choices: ["次へ"],
+  stimulus: '<div align="left">\
+以上で練習試行は終了です。<br>\
+<br>\
+<br>\
+分からないことがありましたら、実験者に質問してください。<br>\
+<br>\
+<br>\
+また、実験中に気分が悪くなった場合には、すぐに回答を止めてください。<br>\
+<br>\
+<br>\
+',
+} ;
+
+// これから実験開始
+var instruction_p9 = {
+  type: jsPsychHtmlButtonResponse,
+  choices: ["実験開始"],
+  stimulus: '<div align="left">\
+それでは、実験を始めます。<br>\
+<br>\
+<br>\
+準備ができましたら、「実験開始」ボタンを押してください。<br>\
+<br>\
+',
+} ;
+
+// 休憩
+var instruction_p10 = {
+  type: jsPsychHtmlKeyboardResponse,
+  choices: "ALL_KEYS",
+//  choices: ['q'],
+  stimulus: '<div align="center">\
+<p style="font-size: 180px;">休　憩</p>\
+<br></div>\
+',
+} ;
+
 // 実験の終了
 var bye = {
   type: jsPsychHtmlButtonResponse,
   stimulus: '<div align="left"><font size=6>\
-以上で，本日の実験は終了となります。<br>\
-ご協力ありがとうございました。<br>\
-来週は「文字が認知に及ぼす影響」の実験を行う予定ですので，引き続きご協力いただけますと幸いです。<br>\
-よろしくお願い致します。<br>\
+以上で実験は終了です。<br>\
 <br>\
-何かご不明な点等がございましたら，下記のメールアドレスまでご連絡ください。<br>\
-<br></div><div  align="right">\
-人間科学部心理学科<br>\
-渡辺ゼミナール　4年<br>\
-沼倉 日菜子<br>\
-31900875＠tokiwa-u.jp<br>\
 <br>\
+実験者が参りますので、PCは操作せずに少々お待ちください。<br>\
 <br></font></div>\
 ',
 choices: ['実験を終わる'],
@@ -342,4 +386,5 @@ for (let i = 0; i< varexam.length; i++) {
 // ------------------------------------------------------------------------
 
 //jsPsych.run([enter_fullscreen,par_id,hello,trials,bye,exit_fullscreen]);
-jsPsych.run([/*enter_fullscreen,*/instruction_p1,instruction_p2,instruction_p3,NumOfHeartbeats_p1,NumOfHeartbeats_p2,instruction_p4,instruction_p5,instruction_p6,instruction_p7/*,exit_fullscreen*/]);
+//jsPsych.run([/*enter_fullscreen,*/instruction_p1,instruction_p2,instruction_p3,NumOfHeartbeats_p1,NumOfHeartbeats_p2,instruction_p4,instruction_p5,instruction_p6,instruction_p7/*,exit_fullscreen*/]);
+jsPsych.run([instruction_p7,instruction_p8,instruction_p9,instruction_p10,bye]);
