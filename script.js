@@ -17,8 +17,8 @@ var filename = "yanokura-2022-" + yyyymmddhhmise() + ".csv" ;
 
 var jsPsych = initJsPsych({
   on_finish: function() {
-//    jsPsych.data.get().localSave('csv', filename);
-    jsPsych.data.displayData();
+//    jsPsych.data.get().localSave('csv', filename); // 保存時(本番用)
+//    jsPsych.data.displayData();                    // 画面表示で確認用
   }
 });
 
@@ -114,9 +114,9 @@ choices: ['次へ'],
 } ;
 
 var NumOfHeartbeats_p1 = {
-  type: jsPsychHtmlButtonResponse,
+  type: jsPsychHtmlKeyboardResponse,
   stimulus: '<p style="font-size: 48px;">+</p>',
-  choices: ['次へ'],
+  choices: ['q'],
 } ;
 
 var NumOfHeartbeats_p2 = {
@@ -132,6 +132,61 @@ html: '\
   button_label: '次へ',
 } ;
 
+var instruction_p4 = {
+  type: jsPsychHtmlKeyboardResponse,
+  choices: "ALL_KEYS",
+  stimulus: '<div align="center">\
+<p style="font-size: 320px;">A</p>\
+まず、一定のテンポで音を刻むテンポAが約20秒間再生されます。\
+<br>\
+その後、画面は自動的に切り替わります。\
+<br><br>\
+(何かキーを押すと次の画面に進みます。)\
+<br></div>\
+',
+} ;
+
+var instruction_p5 = {
+  type: jsPsychHtmlButtonResponse,
+  choices: ["回答"],
+  stimulus: '<div align="center">\
+<p style="font-size: 320px;">B</p>\
+',
+  prompt: '<div align="center">\
+続いて、一定のテンポで音を刻むテンポBが再生されます。<br>\
+先程のテンポAと比べてどのくらい速い（または遅い）かを判断してください。<br>\
+「回答」ボタンを押すと、再生が止まり画面が切り替わります。<br>\
+<br></div>\
+',
+} ;
+
+var instruction_p6 = {
+  type: jsPsychHtmlButtonResponse,
+  choices: ["次へ"],
+  stimulus: '<div align="left">\
+テンポB（後に聴いたテンポ）が、テンポA（先に聴いたテンポ）に比べて、<br>\
+どのくらい速い（または遅い）かを、ツマミを動かして回答してください。<br>\
+<br>\
+「次へ」ボタンを押すと、画面が切り替わり次の試行が始まります。<br>\
+<br>\
+',
+} ;
+
+var instruction_p7 = {
+  type: jsPsychHtmlButtonResponse,
+  choices: ["開始"],
+  stimulus: '<div align="left">\
+  以上の流れを1試行とし、<br>\
+  11試行からなるブロックに3回（計33試行）回答していただきます。<br>\
+  <br>\
+  <br>\
+  ※テンポAとテンポBの音の高さは全て同じです。<br>\
+  <br>\
+  <br>\
+    それでは、練習試行を行います。<br>\
+  「開始」ボタンを押してください。<br><br></div>\
+',
+} ;
 
 // 実験の終了
 var bye = {
@@ -287,4 +342,4 @@ for (let i = 0; i< varexam.length; i++) {
 // ------------------------------------------------------------------------
 
 //jsPsych.run([enter_fullscreen,par_id,hello,trials,bye,exit_fullscreen]);
-jsPsych.run([/*enter_fullscreen,*/instruction_p1,instruction_p2,instruction_p3,NumOfHeartbeats_p1,NumOfHeartbeats_p2/*,exit_fullscreen*/]);
+jsPsych.run([/*enter_fullscreen,*/instruction_p1,instruction_p2,instruction_p3,NumOfHeartbeats_p1,NumOfHeartbeats_p2,instruction_p4,instruction_p5,instruction_p6,instruction_p7/*,exit_fullscreen*/]);
