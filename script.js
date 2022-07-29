@@ -264,49 +264,100 @@ var par_id = {
   button_label: '実験の開始',
 };
 
+// ------------------------------------------------------------------------
+// 練習までの教示文
+// ------------------------------------------------------------------------
+
+var introduction = {
+  timeline: [],
+};
+
+// 出来上がった問題をtimelineにpush
+introduction.timeline.push(instruction_p1) ;
+introduction.timeline.push(instruction_p2) ;
+introduction.timeline.push(instruction_p3) ;
+
+introduction.timeline.push(NumOfHeartbeats_p1) ;
+introduction.timeline.push(NumOfHeartbeats_p2) ;
+
+introduction.timeline.push(instruction_p4) ;
+introduction.timeline.push(instruction_p5) ;
+introduction.timeline.push(instruction_p6) ;
+introduction.timeline.push(instruction_p7) ;
+
+
+// ------------------------------------------------------------------------
+// 問題の作成(共通)
+// ------------------------------------------------------------------------
+// 刺激
+var stimulus_raw = { // 用意した音声ファイル
+  'x0.5' : './×0.5.mp3',
+  'x0.6' : './×0.6.mp3',
+  'x0.7' : './×0.7.mp3',
+  'x0.8' : './×0.8.mp3',
+  'x0.9' : './×0.9.mp3',
+  'x1.0' : './×1.0.mp3',
+  'x1.1' : './×1.1.mp3',
+  'x1.2' : './×1.2.mp3',
+  'x1.3' : './×1.3.mp3',
+  'x1.4' : './×1.4.mp3',
+  'x1.5' : './×1.5.mp3',
+ } 
+
+var experiment_A = {
+  type: jsPsychAudioKeyboardResponse,
+//  choices: "NO_KEYS",
+  choices: "ALL_KEYS",
+  trial_duration: 2000,
+  stimulus: function () {return stimulus_raw['x1.0'];},
+//  stimulus: function () {return stimulus_raw['x1.0'] ;},
+  prompt: '<p style="font-size: 320px;">A</p>' ,
+} ;
+
+var answer = {
+  type: jsPsychHtmlSliderResponse,
+//  require_movement: true,
+  labels: ['遅い', '同じ', '速い'],
+  button_label: "次へ",
+  stimulus: '<div align="left">\
+  BはAに比べて、どのくらい速い/遅いですか？<br>\
+どのくらい速い（または遅い）かを、ツマミを動かして回答してください。<br><br><br>\
+',
+  prompt:"<br><br>ボタンを押すと次の試行に進みます。<br><br>",
+} ;
+
 
 // ------------------------------------------------------------------------
 // 問題の作成(練習)
 // ------------------------------------------------------------------------
+var experiment_B1 = {
+  type: jsPsychAudioButtonResponse,
+  stimulus: function () {return stimulus_raw['x0.5'] ;},
+  prompt: '<p style="font-size: 320px;">B</p><br>ボタンを押すと回答画面に進みます。' ,
+  choices: ["回答"],
+} ;
+
+var experiment_B2 = {
+  type: jsPsychAudioButtonResponse,
+  stimulus: function () {return stimulus_raw['x1.5'] ;},
+  prompt: '<p style="font-size: 320px;">B</p><br>ボタンを押すと回答画面に進みます。' ,
+  choices: ["回答"],
+} ;
+
 var trials_pre = {
   timeline: [],
 };
 
-// 刺激
-var varexam_pre = [
-  { index:0,label: 'コオリ'   , select:["冷たい","クール","冬"] },
-  { index:1,label: 'サツキ'   , select:["五月","植物","アニメ"] },
-  { index:2,label: 'レモン'   , select:["すっぱい","黄色","果物"] },
-]  
+// 出来上がった問題をtimelineにpush
+trials_pre.timeline.push(experiment_A) ;
+trials_pre.timeline.push(experiment_B1) ;
+trials_pre.timeline.push(answer) ;
+trials_pre.timeline.push(experiment_A) ;
+trials_pre.timeline.push(experiment_B2) ;
+trials_pre.timeline.push(answer) ;
 
-// 配列から問題のペアを作成
-for (let i = 0; i< varexam_pre.length; i++) {
-  // 単語を呈示
-  var exam_pre = {
-    type: jsPsychHtmlKeyboardResponse,
-    stimulus: function () {return  "<p style='font-size: 48px;'>" + varexam_pre[i].label + "</p>"; },
-    trial_duration: 2500, // 表示時間
-    choices: "NO_KEYS",
-  };
-  // その単語の印象を選択
-  var choiceone_pre = {
-  type: jsPsychSurveyMultiChoice,
-  button_label: "次へ",
-  questions: [
-    {
-      prompt: "この中から一番印象の強い単語を1つ選んでください。", 
-      name: 'selectedword', 
-      options: varexam_pre[i].select, 
-      required: true,
-      horizontal: false
-    }, 
-  ]
-  };
-  // 出来上がった問題をtimelineにpush
-  trials_pre.timeline.push(eyepoint) ;
-  trials_pre.timeline.push(exam_pre) ;
-  trials_pre.timeline.push(choiceone_pre) ;
-}
+trials_pre.timeline.push(instruction_p8) ;
+trials_pre.timeline.push(instruction_p9) ;
 
 // ------------------------------------------------------------------------
 // 問題の作成(本番)
@@ -385,6 +436,5 @@ for (let i = 0; i< varexam.length; i++) {
 // 実験の開始
 // ------------------------------------------------------------------------
 
-//jsPsych.run([enter_fullscreen,par_id,hello,trials,bye,exit_fullscreen]);
-//jsPsych.run([/*enter_fullscreen,*/instruction_p1,instruction_p2,instruction_p3,NumOfHeartbeats_p1,NumOfHeartbeats_p2,instruction_p4,instruction_p5,instruction_p6,instruction_p7/*,exit_fullscreen*/]);
-jsPsych.run([instruction_p7,instruction_p8,instruction_p9,instruction_p10,bye]);
+//jsPsych.run([enter_fullscreen,exit_fullscreen]);
+jsPsych.run([introduction,trials_pre,bye]);
