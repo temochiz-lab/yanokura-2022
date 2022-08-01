@@ -17,7 +17,7 @@ var filename = "yanokura-2022-" + yyyymmddhhmise() + ".csv" ;
 
 var jsPsych = initJsPsych({
   on_finish: function() {
-//    jsPsych.data.get().localSave('csv', filename); // 保存時(本番用)
+    jsPsych.data.get().localSave('csv', filename); // 保存時(本番用)
 //    jsPsych.data.displayData();                    // 画面表示で確認用
   }
 });
@@ -147,22 +147,23 @@ var instruction_p4 = {
 <br>\
 その後、画面は自動的に切り替わります。\
 <br><br>\
-(何かキーを押すと次の画面に進みます。)\
+何かキーを押すと次の画面に進みます。\
 <br></div>\
 ',
 } ;
 
 // 実験の説明(2/3) テンポBの説明
 var instruction_p5 = {
-  type: jsPsychHtmlButtonResponse,
-  choices: ["回答"],
+  type: jsPsychHtmlKeyboardResponse,
+  choices: "ALL_KEYS",
   stimulus: '<div align="center">\
 <p style="font-size: 320px;">B</p>\
 ',
   prompt: '<div align="center"><br>\
 続いて、一定のテンポで音を刻むテンポBが再生されます。<br>\
 先程のテンポAと比べてどのくらい速い（または遅い）かを判断してください。<br>\
-「回答」ボタンを押すと、再生が止まり画面が切り替わります。<br>\
+<br>\
+何かキーを押すと、再生が止まり画面が切り替わります。<br>\
 <br></div>\
 ',
 } ;
@@ -232,8 +233,8 @@ var instruction_p9 = {
 // 休憩
 var instruction_p10 = {
   type: jsPsychHtmlKeyboardResponse,
-  choices: "ALL_KEYS",
-//  choices: ['q'],
+//  choices: "ALL_KEYS",
+  choices: ['q'],
   stimulus: '<div align="center">\
 <p style="font-size: 180px;">休　憩</p>\
 <br></div>\
@@ -243,12 +244,12 @@ var instruction_p10 = {
 // 実験の終了
 var bye = {
   type: jsPsychHtmlButtonResponse,
-  stimulus: '<div align="left"><font size=6>\
+  stimulus: '<div align="left">\
 以上で実験は終了です。<br>\
 <br>\
 <br>\
 実験者が参りますので、PCは操作せずに少々お待ちください。<br>\
-<br></font></div>\
+<br></div>\
 ',
 choices: ['実験を終わる'],
 };
@@ -306,9 +307,9 @@ var stimulus_raw = { // 用意した音声ファイル
 
 var experiment_A = {
   type: jsPsychAudioKeyboardResponse,
-//  choices: "NO_KEYS",
-  choices: "ALL_KEYS",
-  trial_duration: 2000,
+  choices: "NO_KEYS",
+//  choices: "ALL_KEYS",
+  trial_duration: 2000, // ここでAの再生時間を指定(ミリ秒)
   stimulus: function () {return stimulus_raw['x1.0'];},
 //  stimulus: function () {return stimulus_raw['x1.0'] ;},
   prompt: '<p style="font-size: 320px;">A</p>' ,
@@ -326,22 +327,21 @@ var answer = {
   prompt:"<br><br>ボタンを押すと次の試行に進みます。<br><br>",
 } ;
 
-
 // ------------------------------------------------------------------------
 // 問題の作成(練習)
 // ------------------------------------------------------------------------
 var experiment_B1 = {
-  type: jsPsychAudioButtonResponse,
+  type: jsPsychAudioKeyboardResponse,
+  choices: "ALL_KEYS",
   stimulus: function () {return stimulus_raw['x0.5'] ;},
-  prompt: '<p style="font-size: 320px;">B</p><br>ボタンを押すと回答画面に進みます。' ,
-  choices: ["回答"],
+  prompt: '<p style="font-size: 320px;">B</p><br>何かキーを押すと回答画面に進みます。' ,
 } ;
 
 var experiment_B2 = {
-  type: jsPsychAudioButtonResponse,
+  type: jsPsychAudioKeyboardResponse,
+  choices: "ALL_KEYS",
   stimulus: function () {return stimulus_raw['x1.5'] ;},
-  prompt: '<p style="font-size: 320px;">B</p><br>ボタンを押すと回答画面に進みます。' ,
-  choices: ["回答"],
+  prompt: '<p style="font-size: 320px;">B</p><br>何かキーを押すと回答画面に進みます。' ,
 } ;
 
 var trials_pre = {
@@ -362,6 +362,7 @@ trials_pre.timeline.push(instruction_p9) ;
 // ------------------------------------------------------------------------
 // 問題の作成(本番)
 // ------------------------------------------------------------------------
+
 // ここに各問題を格納
 var trials = {
   timeline: [],
@@ -369,27 +370,16 @@ var trials = {
 
 // 刺激
 var varexam = [
-  { index: 0,label: 'アクマ'   , select:["魔物","デーモン","天使"] },
-  { index: 1,label: 'キアツ'   , select:["大気","圧力","天候"] },
-  { index: 2,label: 'センイ'   , select:["闘志","布","医者"] },
-  { index: 3,label: 'ハクイ'   , select:["医療従事者","化学研究","死に装束"] },
-  { index: 4,label: 'ユカタ'   , select:["夏","入浴","和服"] },
-  { index: 5,label: 'カラス'   , select:["黒色","鳥類","不吉"] },
-  { index: 6,label: 'スルメ'   , select:["イカ","干物","おつまみ"] },
-  { index: 7,label: 'コイン'   , select:["硬貨","金属","表裏"] },
-  { index: 8,label: 'タヌキ'   , select:["だます","哺乳類","寝る"] },
-  { index: 9,label: 'メマイ'   , select:["回る","忙しい","体調不良"] },
-  { index:10,label: 'キリン'   , select:["首","哺乳類","神童"] },
-  { index:11,label: 'エホン'   , select:["子ども","絵","物語"] },
-  { index:12,label: 'シカイ'   , select:["進行役","眼","海"] },
-  { index:13,label: 'ナマリ'   , select:["にぶる","金属","方言"] },
-  { index:14,label: 'ユウヒ'   , select:["夕方","朝日","オレンジ"] },
-  { index:15,label: 'カシワ'   , select:["植物","餅","縁起木"] },
-  { index:16,label: 'サクラ'   , select:["植物","春","ピンク"] },
-  { index:17,label: 'センス'   , select:["感覚","扇","夏"] },
-  { index:18,label: 'ナイフ'   , select:["切る","料理","カトラリー"] },
-  { index:19,label: 'モナカ'   , select:["菓子","名月","あんこ"] },
-  ]  
+  // 1セット目 11個
+  stimulus_raw['x0.5'] , stimulus_raw['x0.6'] , stimulus_raw['x0.7'] , stimulus_raw['x0.8'] , stimulus_raw['x0.9'] ,
+  stimulus_raw['x1.0'] , stimulus_raw['x1.1'] , stimulus_raw['x1.2'] , stimulus_raw['x1.3'] , stimulus_raw['x1.4'] ,stimulus_raw['x1.5'] ,
+  // 2セット目 11個
+  stimulus_raw['x0.5'] , stimulus_raw['x0.6'] , stimulus_raw['x0.7'] , stimulus_raw['x0.8'] , stimulus_raw['x0.9'] ,
+  stimulus_raw['x1.0'] , stimulus_raw['x1.1'] , stimulus_raw['x1.2'] , stimulus_raw['x1.3'] , stimulus_raw['x1.4'] ,stimulus_raw['x1.5'] ,
+  // 3セット目 11個
+  stimulus_raw['x0.5'] , stimulus_raw['x0.6'] , stimulus_raw['x0.7'] , stimulus_raw['x0.8'] , stimulus_raw['x0.9'] ,
+  stimulus_raw['x1.0'] , stimulus_raw['x1.1'] , stimulus_raw['x1.2'] , stimulus_raw['x1.3'] , stimulus_raw['x1.4'] ,stimulus_raw['x1.5'] ,
+]
 
 // ランダマイズ
 var sequence = [] ;
@@ -403,38 +393,32 @@ for (let i = 0; i< varexam.length; i++) {
   sequence[target] = tmpseq
 }
 
-// 配列から問題のペアを作成
+// 問題を作成
 for (let i = 0; i< varexam.length; i++) {
-  // 単語を呈示
-  var exam = {
-    type: jsPsychHtmlKeyboardResponse,
-    stimulus: function () {return  "<p style='font-size: 48px;'>" + varexam[sequence[i]].label + "</p>"; },
-    trial_duration: 2500, // 表示時間
-    choices: "NO_KEYS",
-  };
-  // その単語の印象を選択
-  var choiceone = {
-  type: jsPsychSurveyMultiChoice,
-  button_label: "次へ",
-  questions: [
-    {
-      prompt: "この中から一番印象の強い単語を1つ選んでください。", 
-      name: 'selectedword', 
-      options: varexam[sequence[i]].select, 
-      required: true,
-      horizontal: false
-    }, 
-  ]
-  };
+//for (let i = 0; i< 3; i++) { // テスト用
+    // Bの作成
+  var experiment_B = {
+    type: jsPsychAudioKeyboardResponse,
+    choices: "ALL_KEYS",
+    stimulus: function () {return varexam[sequence[i]] ;},
+    prompt: '<p style="font-size: 320px;">B</p><br>何かキーを押すと回答画面に進みます。' ,
+  } ;
+
   // 出来上がった問題をtimelineにpush
-  trials.timeline.push(eyepoint) ;
-  trials.timeline.push(exam) ;
-  trials.timeline.push(choiceone) ;
+  trials.timeline.push(experiment_A) ;
+  trials.timeline.push(experiment_B) ;
+  trials.timeline.push(answer) ;
+
+  if ( i == 10) trials.timeline.push(instruction_p10) ; // 休憩1回目
+  if ( i == 21) trials.timeline.push(instruction_p10) ; // 休憩2回目
+  
 }
 
 // ------------------------------------------------------------------------
 // 実験の開始
 // ------------------------------------------------------------------------
 
-//jsPsych.run([enter_fullscreen,exit_fullscreen]);
-jsPsych.run([introduction,trials_pre,bye]);
+// jsPsych.run([introduction,bye]); // 教示文だけ
+// jsPsych.run([trials_pre,bye]);   // 練習だけ
+// jsPsych.run([trials, bye]);      // 本番だけ
+jsPsych.run([enter_fullscreen,introduction,trials_pre,trials,bye,exit_fullscreen]);
