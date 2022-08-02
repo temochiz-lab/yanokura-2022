@@ -40,7 +40,7 @@ var preload = {
 var eyepoint = {
   type: jsPsychHtmlKeyboardResponse,
   stimulus: '<p style="font-size: 48px;">+</p>',
-  choices: jsPsych.NO_KEYS,
+  choices: "NO_KEYS",
   trial_duration: 1500, // 表示時間
 };
 
@@ -48,7 +48,7 @@ var eyepoint = {
 var blankscreen = {
   type: jsPsychHtmlKeyboardResponse,
   stimulus: '',
-  choices: jsPsych.NO_KEYS,
+  choices: "NO_KEYS",
   trial_duration: 2000, // 表示時間 
 };
 
@@ -132,7 +132,7 @@ html: '\
 <br><br>\
 　　　　　　　　　　　　　　　　　　　　　　　（実測値）　<input name="q2" type="text" /><br><br>\
 <br><br>\
-入力が完了しましたら、実験の説明に移ります。「次へ」を押してください。<br>\
+入力が完了しましたら、「次へ」を押してください。<br>\
 <br>',
   button_label: '次へ',
 } ;
@@ -241,7 +241,19 @@ var instruction_p10 = {
 ',
 } ;
 
-// 実験の終了
+// 再度心拍数を測定します
+var instruction_p11 = {
+  type: jsPsychHtmlButtonResponse,
+  stimulus: '<div align="left">\
+続いて、心拍数を測定します。<br>\
+<br>\
+実験者の指示に従ってください。<br>\
+<br></div>\
+',
+choices: ['次へ'],
+} ;
+
+// 実験の終了、この後は実験者用画面
 var bye = {
   type: jsPsychHtmlButtonResponse,
   stimulus: '<div align="left">\
@@ -254,21 +266,36 @@ var bye = {
 choices: ['実験を終わる'],
 };
 
-// 最初の説明と被検者情報の入力
-var par_id = {
-  type: jsPsychSurveyText,
-  questions: [
-    {prompt: '参加者ID（例　A1，B2）を入力してください。', columns: 10, required: true, name: 'id'},
-    {prompt: '性別（1：男性，2：女性，3：回答しない）を入力してください。', columns: 10, required: true, name: 'sex'},
-    {prompt: '年齢（半角数字のみ）を入力してください', columns: 10, required: true, name: 'age'},
-  ],
-  button_label: '実験の開始',
+// アンケートの入力
+var instruction_p12 = {
+  type: jsPsychSurveyHtmlForm,
+  preamble:'<div align="left"><font size=4>\
+最後に、以下についてご自由にお答えください。<br>\
+<br></font></div>\
+',
+html: '\
+① テンポAやテンポBがどのように聴こえていたか<br><textarea name="q5" rows="3" cols="80"></textarea><br><br>\
+② 今回の実験へのご意見　　　　　　　　　　　<br><textarea name="q6" rows="3" cols="80"></textarea><br><br>\
+<br>',
+  button_label: '次へ',
+} ;
+
+// 終了のご挨拶
+var instruction_p13 = {
+  type: jsPsychHtmlButtonResponse,
+  stimulus: '<div align="left">\
+以上で全工程が終了となります。<br>\
+<br>\
+<br>\
+ご協力ありがとうございました。<br>\
+<br></div>\
+',
+choices: ['実験を終わる'],
 };
 
 // ------------------------------------------------------------------------
 // 練習までの教示文
 // ------------------------------------------------------------------------
-
 var introduction = {
   timeline: [],
 };
@@ -286,6 +313,19 @@ introduction.timeline.push(instruction_p5) ;
 introduction.timeline.push(instruction_p6) ;
 introduction.timeline.push(instruction_p7) ;
 
+// ------------------------------------------------------------------------
+// 実験後の教示文(心拍数入力)
+// ------------------------------------------------------------------------
+var introduction_finish = {
+  timeline: [],
+};
+
+introduction_finish.timeline.push(bye) ;
+introduction_finish.timeline.push(instruction_p11) ;
+introduction_finish.timeline.push(NumOfHeartbeats_p1) ;
+introduction_finish.timeline.push(NumOfHeartbeats_p2) ;
+introduction_finish.timeline.push(instruction_p12) ;
+introduction_finish.timeline.push(instruction_p13) ;
 
 // ------------------------------------------------------------------------
 // 問題の作成(共通)
@@ -309,7 +349,7 @@ var experiment_A = {
   type: jsPsychAudioKeyboardResponse,
   choices: "NO_KEYS",
 //  choices: "ALL_KEYS",
-  trial_duration: 2000, // ここでAの再生時間を指定(ミリ秒)
+  trial_duration: 30000, // ここでAの再生時間を指定(ミリ秒)
   stimulus: function () {return stimulus_raw['x1.0'];},
 //  stimulus: function () {return stimulus_raw['x1.0'] ;},
   prompt: '<p style="font-size: 320px;">A</p>' ,
@@ -395,7 +435,7 @@ for (let i = 0; i< varexam.length; i++) {
 
 // 問題を作成
 for (let i = 0; i< varexam.length; i++) {
-//for (let i = 0; i< 3; i++) { // テスト用
+//for (let i = 0; i< 2; i++) { // テスト用
     // Bの作成
   var experiment_B = {
     type: jsPsychAudioKeyboardResponse,
@@ -421,4 +461,4 @@ for (let i = 0; i< varexam.length; i++) {
 // jsPsych.run([introduction,bye]); // 教示文だけ
 // jsPsych.run([trials_pre,bye]);   // 練習だけ
 // jsPsych.run([trials, bye]);      // 本番だけ
-jsPsych.run([enter_fullscreen,introduction,trials_pre,trials,bye,exit_fullscreen]);
+jsPsych.run([enter_fullscreen,introduction,trials_pre,trials,introduction_finish,exit_fullscreen]);
