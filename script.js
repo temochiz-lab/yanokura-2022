@@ -290,7 +290,7 @@ var instruction_p13 = {
 ご協力ありがとうございました。<br>\
 <br></div>\
 ',
-choices: ['実験を終わる'],
+choices: ['終了'],
 };
 
 // ------------------------------------------------------------------------
@@ -349,7 +349,7 @@ var experiment_A = {
   type: jsPsychAudioKeyboardResponse,
   choices: "NO_KEYS",
 //  choices: "ALL_KEYS",
-  trial_duration: 30000, // ここでAの再生時間を指定(ミリ秒)
+  trial_duration: 11000, // ここでAの再生時間を指定(ミリ秒)
   stimulus: function () {return stimulus_raw['x1.0'];},
 //  stimulus: function () {return stimulus_raw['x1.0'] ;},
   prompt: '<p style="font-size: 320px;">A</p>' ,
@@ -458,7 +458,8 @@ for (let i = 0; i< varexam.length; i++) {
 // 実験の開始
 // ------------------------------------------------------------------------
 
-// jsPsych.run([introduction,bye]); // 教示文だけ
-// jsPsych.run([trials_pre,bye]);   // 練習だけ
-// jsPsych.run([trials, bye]);      // 本番だけ
-jsPsych.run([enter_fullscreen,introduction,trials_pre,trials,introduction_finish,exit_fullscreen]);
+// jsPsych.run([introduction,bye]);                    // 教示文だけ
+// jsPsych.run([trials_pre,bye]);                      // 練習だけ
+// jsPsych.run([trials, bye]);                         // 本番だけ
+// jsPsych.run([introduction_finish,exit_fullscreen]); // 実験終了後だけ
+jsPsych.run([enter_fullscreen,introduction,trials_pre,trials,introduction_finish,exit_fullscreen]); // 全部
